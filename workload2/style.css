@@ -2,6 +2,8 @@ p {
     font-family: Arial; color: red; 
   }
 h1 { color: bisque;} 
+h2.destination {
+    font-family: cursive;}
 .title { color: teal;
 }
 .uppercase { text-transform: uppercase;}
