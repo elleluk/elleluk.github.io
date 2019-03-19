@@ -4,7 +4,7 @@ p {
 h1 { color: bisque;} 
 h2.destination {
     font-family: cursive;}
-    h5 {color: rebeccapurple;}
+    h5 {color: rebeccapurple !important;}
 
 .title { color: teal;
 }
