@@ -1,4 +1,5 @@
-p {
+p,
+h5 {
     font-family: Arial; color: red; 
   }
 h1 { color: bisque;} 
