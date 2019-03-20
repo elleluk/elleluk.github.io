@@ -1,0 +1,41 @@
+body { 
+  max-width: 800px;
+  margin: auto; 
+
+}
+header {
+text-align: center; 
+background-image: url("image/header.jpg");
+background-position:0 0%; 
+}
+
+header h2 {
+  font-size: 4em;
+  color: white; 
+  margin: 0;
+  padding: 1em 0;
+
+
+}
+header h3 { 
+  font-size: 2em;
+  margin: 0;
+}
+
+header h4 {
+  font-size: 0,75em;
+  margin: 10px;
+}
+.autor {
+text-align: center;
+}
+.autor img {
+  border-radius: 50%;
+  margin: -40px; 
+}
+.address {
+  margin: 5%;
+}
+address a {
+  color: gray;
+}
