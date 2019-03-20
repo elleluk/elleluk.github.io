@@ -33,7 +33,7 @@ text-align: center;
 }
 .autor img {
   border-radius: 50%;
-  margin: -40px; 
+  margin: -50px; 
   border: 5px solid white;
 }
 .address {
@@ -75,4 +75,11 @@ main figure img {
 }
 footer {
   padding: 1em 0 3em 0;
+}
+@media only screen and (max-width: 1000px) {
+  main figure figcaption {
+    float: none; 
+    margin-left: 0;
+    width: auto; 
+  }
 }
