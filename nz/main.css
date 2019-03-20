@@ -1,8 +1,10 @@
 body { 
   max-width: 800px;
   margin: auto; 
+  font-family: "open sans";
 
 }
+
 header {
 text-align: center; 
 background-image: url("image/header.jpg");
@@ -24,7 +26,7 @@ header h3 {
 
 header h4 {
   font-size: 0,75em;
-  margin: 10px;
+ 
 }
 .autor {
 text-align: center;
@@ -32,10 +34,45 @@ text-align: center;
 .autor img {
   border-radius: 50%;
   margin: -40px; 
+  border: 5px solid white;
 }
 .address {
   margin: 5%;
 }
 address a {
   color: gray;
+}
+
+main { 
+  width: 70%;
+  margin: auto;
+}
+main figure {
+margin-left: 0%;
+
+}
+main figcaption {
+  float: left;
+  margin-left: -12em; 
+  width: 12em;
+  color: rebeccapurple;
+}
+main figure img {
+  width: 90%;
+}
+#map {
+  height: 360px;
+  width: 90%;
+  border: 1px solid black;
+}
+.back {
+  float: left;
+
+}
+.next {
+  float: right;
+ 
+}
+footer {
+  padding: 1em 0 3em 0;
 }
