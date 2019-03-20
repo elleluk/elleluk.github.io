@@ -1,0 +1,21 @@
+body { 
+  max-width: 800px;
+  margin: auto; 
+
+}
+header {
+text-align: center; 
+background-image: url("images/header.jpg");
+background-position:0 30%; 
+}
+
+header h2 {
+  font-size: 4em;
+}
+header h3 { 
+  font-size: 2em;
+}
+
+header h4 {
+  font-size: 0,75em;
+}
