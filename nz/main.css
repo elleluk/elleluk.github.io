@@ -74,7 +74,7 @@ main figure img {
  
 }
 footer {
-  padding: 1em 0 3em 0;
+padding: 1em 0 3em 0;
 }
 @media only screen and (max-width: 1000px) {
   main figure figcaption {
