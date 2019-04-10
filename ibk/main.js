@@ -63,6 +63,16 @@ L.control.layers ({
     "Stamen Watercolor": kartenlayer.stamen_watercolor
     }).addTo(karte);
 
+karte.setView([47,11], 13);
 
+karte.locate({
+    setView : true,
+    maxZoom : 20,
+});
 
-karte.setView([47,11], 13)
+karte.on("locationfound", function(event){
+    console.log(event);
+    L.marker([
+        event.latitude, event.longitude
+    ]).addTo(karte);
+});
