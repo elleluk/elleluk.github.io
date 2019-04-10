@@ -33,17 +33,17 @@ const kartenlayer = {
         subdomains: ["maps", "maps1", "maps2", "maps3", "maps4"],
         attribution: 'Datenquelle: <a href="https//www.basemap.at">basemap.at</a>'
     }),
-    stamen_toner: L.tileLayer("https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.pgn", {
-        subdomains: ["a", "b", "c"],
+    stamen_toner: L.tileLayer("https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.pgn",{
+        subdomains: ["a", "b","c"],
         attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.',
     }),
-    stamen_relief: L.tileLayer("https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.jpg", {
-        subdomains: ["a", "b", "c"],
+    stamen_relief: L.tileLayer("https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.jpg",{
+        subdomains: ["a", "b","c"],
         attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.',
     }),
-    stamen_watercolor: L.tileLayer("https://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.jpg", {
-        subdomains: ["a", "b", "c"],
-        attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>',
+    stamen_watercolor: L.tileLayer("https://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.jpg",{
+       subdomains: ["a", "b","c"],
+       attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>',
     }),
 
 
@@ -51,70 +51,21 @@ const kartenlayer = {
 
 kartenlayer.geolandbasemap.addTo(karte);
 
-L.control.layers({
+L.control.layers ({
     "Geoland Basemap": kartenlayer.geolandbasemap,
     "Geoland Basemap Grau": kartenlayer.bmapgrau,
     "Basemap High DPI": kartenlayer.bmaphidpi,
     "Geoland Basemap Orthofoto": kartenlayer.bmaporthofoto30cm,
     "Geoland Basemap Gelände": kartenlayer.bmapgelaende,
-    "Geoland Basemap Oberfläche": kartenlayer.bmapoberflaeche,
+    "Geoland Basemap Oberfläche": kartenlayer.bmapoberflaeche, 
     "Stamen Toner": kartenlayer.stamen_toner,
     "Stamen Relief": kartenlayer.stamen_relief,
     "Stamen Watercolor": kartenlayer.stamen_watercolor
-}).addTo(karte);
+    }).addTo(karte);
 
-karte.setView([47, 11], 13);
+karte.setView([47.267111,11.392778], 15
+    );
 
 
-let positionsMarker = L.marker([47, 11]).addTo(karte);
 
-//Zoom to Standort
-karte.locate({
-    setView: true,
-    maxZoom: 20,
-    watch: true, // (Standortbestimmung alle 10 Sekunden!)
-});
 
-//add Marker
-karte.on("locationfound", function (event) {
-    console.log(event);
-    // L.marker(event.latlng).addTo(karte);
-    positionsMarker.setLatLng(event.latlng);
-});
-
-//Kreis um Location
-L.circle([47.261286399999996, 11.3803264], {
-    radius: 280
-}).addTo(karte);
-
-//Standortabfrage nicht erlauben --> Meldung
-karte.on("locationerror", function (event) {
-    alert("Leider keinen Standort gefunden")
-});
-
-//console.log(SPORTSTAETTEN);
-
-//Vorschleife
-for (let staette of SPORTSTAETTEN) {
-    //console.log(staette);
-    let piktogramm = L.icon({
-        iconUrl: `icons/icon_${staette.icon}_schwarz_auf_weiss_250px.png`
-    });
-
-    //marker zeichnen
-    let positionsMarker = L.marker(
-        [staette.lat, staette.lng], {
-            icon: piktogramm
-        }
-    ).addTo(karte);
-
-    L.marker(
-        [staette.lat, staette.lng]
-    ).addTo(karte)
-};
-
-//popup hinzufügen
-positionsMarker.bindPopup(`
-<h3>${staette.name}</h3>
-<p>${staette.typ}</p> 
-`);
