@@ -49,7 +49,7 @@ const kartenlayer = {
 
 };
 
-kartenlayer.geolandbasemap.addTo(karte);
+kartenlayer.bmaporthofoto30cm.addTo(karte);
 
 L.control.layers ({
     "Geoland Basemap": kartenlayer.geolandbasemap,
@@ -65,14 +65,18 @@ L.control.layers ({
 
 karte.setView([47,11], 13);
 
+//Zoom to Standort
 karte.locate({
     setView : true,
     maxZoom : 20,
 });
 
+//add Marker
 karte.on("locationfound", function(event){
     console.log(event);
     L.marker([
         event.latitude, event.longitude
     ]).addTo(karte);
 });
+
+L.circle([47.261286399999996, 11.3803264], {radius: 250}).addTo(karte);
