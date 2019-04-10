@@ -49,7 +49,7 @@ const kartenlayer = {
 
 };
 
-kartenlayer.bmaporthofoto30cm.addTo(karte);
+kartenlayer.geolandbasemap.addTo(karte);
 
 L.control.layers ({
     "Geoland Basemap": kartenlayer.geolandbasemap,
@@ -79,4 +79,8 @@ karte.on("locationfound", function(event){
     ]).addTo(karte);
 });
 
-L.circle([47.261286399999996, 11.3803264], {radius: 250}).addTo(karte);
+L.circle([47.261286399999996, 11.3803264], {radius: 280}).addTo(karte);
+
+karte.on("locationerror", function(event){
+alert("Leider keinen Standort gefunden")
+});
