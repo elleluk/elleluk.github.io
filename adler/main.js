@@ -128,3 +128,13 @@ for (let blick of ADLERBLICKE) {
     );
 }
 karte.fitBounds(blickeGruppe.getBounds());
+
+//Kartenelemente einbauen: 
+
+karte.addControl(new L.Control.Fullscreen());
+let hash = new L.Hash(karte);
+let coords = new L.Control.Coordinates();
+coords.addTo(karte);
+karte.on('click', function(e) {
+	coords.setCoordinates(e);
+});
