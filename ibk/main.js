@@ -65,22 +65,28 @@ L.control.layers ({
 
 karte.setView([47,11], 13);
 
+
+let positionsMarker = L.marker([47,11]).addTo(karte);
+
 //Zoom to Standort
 karte.locate({
     setView : true,
     maxZoom : 20,
+    watch : true,
 });
 
 //add Marker
 karte.on("locationfound", function(event){
     console.log(event);
-    L.marker([
-        event.latitude, event.longitude
-    ]).addTo(karte);
+   // L.marker(event.latlng).addTo(karte);
+    positionsMarker.setLatLng(event.latlng);
 });
 
+//Kreis um Location
 L.circle([47.261286399999996, 11.3803264], {radius: 280}).addTo(karte);
 
+//Standortabfrage nicht erlauben --> Meldung
 karte.on("locationerror", function(event){
 alert("Leider keinen Standort gefunden")
 });
+
