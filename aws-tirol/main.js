@@ -100,17 +100,17 @@ async function loadStations() {
 
 
 
-const windlayer = L.featureGroup();
+    const windlayer = L.featureGroup();
     L.geoJson(stations, {
         pointToLayer: function (feature, latlng) {
             if (feature.properties.WR) {
-               
-                    let color = 'black';
-                    if (feature.properties.WG > 20) {
-                        color = 'red';
-                    }
 
-                
+                let color = 'black';
+                if (feature.properties.WG > 20) {
+                    color = 'red';
+                }
+
+
                 return L.marker(latlng, {
                     icon: L.divIcon({
                         html: `<i style="color:${color}; transform: rotate(${feature.properties.WR}deg)" class="fas fa-hand-point-right fa-2x"></i>`
@@ -122,6 +122,50 @@ const windlayer = L.featureGroup();
     }).addTo(windlayer);
     layerControl.addOverlay(windlayer, "Windrichtung")
     windlayer.addTo(karte);
-}
 
+
+
+
+    //Temperatur layer statt Wind
+    const temperaturlayer = L.featureGroup();
+    const farbPalette= [
+        [-10, "grey"],
+        [-5, "purple"],
+        [-1, "white"],
+        [0,"blue"],
+        [1,"yellow"],
+        [5,"orange"],
+        [10,"red"],
+    ];
+
+    L.geoJson(stations, {
+        pointToLayer: function (feature, latlng) {
+            let color;
+            if (feature.properties.LT) {
+                for (let i=0; i<farbPalette.length; i++) {
+                    console.log(farbPalette[i],feature.properties.LT);
+                    if (feature.properties.LT < farbPalette[i][0]){
+                        color = farbPalette[i][1];
+                        break;
+                    }
+                }
+
+                //let color = 'blue';
+                //if (feature.properties.LT > 0) {
+                  //  color = 'red';
+               // }
+
+
+                return L.marker(latlng, {
+                    icon: L.divIcon({
+                        html: `<div class="temperaturLabel" style="background-color:${color}">${feature.properties.LT}</div>`
+
+                    })
+                });
+            }
+        }
+    }).addTo(temperaturlayer);
+    layerControl.addOverlay(temperaturlayer, "Temperatur")
+    temperaturlayer.addTo(karte);
+}
 loadStations();
