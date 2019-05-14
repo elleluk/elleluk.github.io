@@ -100,135 +100,107 @@ async function loadStations() {
 
 
 
-    const windlayer = L.featureGroup();
-    L.geoJson(stations, {
-        pointToLayer: function (feature, latlng) {
-            if (feature.properties.WR) {
+    const windLayer = L.featureGroup();
+      let farbpalette_wind= [
+        [3, "#00b900"],
+        [4, "#10cd24"],
+        [5, "#72d475"],
+        [6, "#fed6d3"],
+        [7, "#ffb6b3"],
+        [8, "#ff9e9a"],
+        [9, "#ff8281"],
+        [10, "#ff6160"],
+        [11, "#ff453c"],
+        [12, "#ff200e"]
+]; 
 
-                let color = 'black';
-                if (feature.properties.WG > 20) {
-                    color = 'red';
+
+
+
+L.geoJson(stations, {
+    pointToLayer: function (feature, latlng) {
+        if (feature.properties.WR) {
+    
+            for (let i = 0; i < farbpalette_wind.length; i++) {
+                const windspeed_bf = Math.round(Math.pow(((feature.properties.WG / 3.6) / 0.836), (2 / 3))); 
+                //Umrechnen von beauford -> km/h
+                if (windspeed_bf < farbpalette_wind[i][0]) {
+                    color = farbpalette_wind[i][1];
+                    break;
                 }
-
-
-                return L.marker(latlng, {
-                    icon: L.divIcon({
-                        html: `<i style="color:${color}; transform: rotate(${feature.properties.WR}deg)" class="fas fa-hand-point-right fa-2x"></i>`
-
-                    })
-                });
             }
+
+            //console.log('Windspeed (Beafort):', windspeed_bf);
+            return L.marker(latlng, {
+                icon: L.divIcon({
+                    html: `<i style="color: ${color}; transform: rotate(${feature.properties.WR-45}deg)" class="fas fa-arrow-circle-right"></i>`
+                })
+
+            });
+
         }
-    }).addTo(windlayer);
-    layerControl.addOverlay(windlayer, "Windrichtung")
-    windlayer.addTo(karte);
+    }
+}).addTo(windLayer);
+layerControl.addOverlay(windLayer, "Windrichtung");
+
+//windLayer.addTo(karte);
 
 
 
 
-    //Temperatur layer statt Wind
+    //Temperatur Layer statt Wind
     const temperaturlayer = L.featureGroup();
-    const farbPalette= [
-        [-12, "#0500ff"],
-        [-11.5, "#0400ff"],
-        [-11, "#0300ff"],
-        [-10.5, "#0200ff"],
-        [-10, "#0100ff"],
-        [-9.5, "#0000ff"],
-        [-9, "#0002ff"],
-        [-8.5, "#0012ff"],
-        [-8, "#0022ff"],
-        [-7.5, "#0032ff"],
-        [-7, "#0044ff"],
-        [-6.5, "#0054ff"],
-        [-6, "#0064ff"],
-        [-5.5, "#0074ff"],
-        [-5, "#0084ff"],
-        [-4.5, "#0094ff"],
-        [-4, "#00a4ff"],
-        [-3.5, "#00b4ff"],
-        [-3, "#00c4ff"],
-        [-2.5, "#00d4ff"],
-        [-2, "#00e4ff"],
-        [-1.5, "#00fff4"],
-        [-1, "#00ffd0"],
-        [-0.5, "#00ffa8"],
-        [0, "#00ff83"],
-        [0.5, "#00ff5c"],
-        [1, "#00ff36"],
-        [1.5, "#00ff10"],
-        [2, "#17ff00"],
-        [2.5, "#3eff00"],
-        [3, "#65ff00"],
-        [3.5, "#8aff00"],
-        [4, "#b0ff00"],
-        [4.5, "#d7ff00"],
-        [5, "#fdff00"],
-        [5.5, "#FFfa00"],
-        [6, "#FFf000"],
-        [6.5, "#FFe600"],
-        [7, "#FFdc00"],
-        [7.5, "#FFd200"],
-        [8, "#FFc800"],
-        [8.5, "#FFbe00"],
-        [9, "#FFb400"],
-        [9.5, "#FFaa00"],
-        [10, "#FFa000"],
-        [10.5, "#FF9600"],
-        [11, "#FF8c00"],
-        [11.5, "#FF8200"],
-        [12, "#FF7800"],
-        [12.5, "#FF6e00"],
-        [13, "#FF6400"],
-        [13.5, "#FF5a00"],
-        [14, "#FF5000"],
-        [14.5, "#FF4600"],
-        [15, "#FF3c00"],
-        [15.5, "#FF3200"],
-        [16, "#FF2800"],
-        [16.5, "#FF1e00"],
-        [17, "#FF1400"],
-        [17.5, "#FF0a00"],
-        [18, "#FF0000"],
-        [18.5, "#FF0010"],
-        [19, "#FF0020"],
-        [19.5, "#FF0030"],
-        [20, "#FF0040"],
-        [20.5, "#FF0050"],
-        [21, "#FF0060"],
-        [21.5, "#FF0070"],
-        [22, "#FF0080"],
-        [22.5, "#FF0090"],
-        [23, "#FF00A0"],
-        [23.5, "#FF00B0"],
-        [24, "#FF00C0"],
-        [24.5, "#FF00D0"],
-        [25, "#FF00E0"],
-        [25.5, "#FF00F0"],
-        [26, "#FF01F0"],
-        [26.5, "#FF02F0"],
-        [27, "#FF03F0"],
-        [27.5, "#FF04F0"],
-        [28, "#FF05F0"],
-        [28.5, "#FF06F0"],
-        [29, "#FF07F0"],
-        [29.5, "#FF08F0"],
-        [30, "#FF09F0"],
-        [30.5, "#FF0AF0"],
-        [31, "#FF0BF0"],
-        [31.5, "#FF0CF0"],
-        [32, "#FF0DF0"],
-[32.5, "#FF0EF0"]
-    ];
+        let farbPalette_temp= [
+        [-30, "#646664"],
+        [-28, "#8c8a8c"],
+        [-26, "#b4b2b4"],
+        [-24, "#cccecc"],
+        [-22, "#e4e6e4"],
+        [-20, "#772d76"],
+        [-18, "#b123b0"],
+        [-16, "#d219d1"],
+        [-14, "#f0f"],
+        [-12, "#ff94ff"],
+        [-10, "#3800d1"],
+        [-8, "#325afe"],
+        [-6, "#2695ff"],
+        [-4, "#00cdff"],
+        [-2, "#00fffe"],
+        [0, "#007800"],
+        [2, "#009d00"],
+        [4, "#00bc02"],
+        [6, "#00e200"],
+        [8, "#0f0"],
+        [10, "#fcff00"],
+        [12, "#fdf200"],
+        [14, "#fde100"],
+        [16, "#ffd100"],
+        [18, "#ffbd00"],
+        [20, "#ffad00"],
+        [22, "#ff9c00"],
+        [24, "#ff7800"],
+        [26, "red"],
+        [28, "#f30102"],
+        [30, "#d20000"],
+        [32, "#c10000"],
+        [34, "#b10000"],
+        [36, "#a10000"],
+        [38, "#900000"],
+        [40, "#770100"],
+        [42, "#5f0100"],
+        [44, "#460101"],
+        [46, "#2e0203"]
+];
+
 
     L.geoJson(stations, {
         pointToLayer: function (feature, latlng) {
             let color;
             if (feature.properties.LT) {
-                for (let i=0; i<farbPalette.length; i++) {
-                    console.log(farbPalette[i],feature.properties.LT);
-                    if (feature.properties.LT < farbPalette[i][0]){
-                        color = farbPalette[i][1];
+                for (let i=0; i<farbPalette_temp.length; i++) {
+                    console.log(farbPalette_temp[i],feature.properties.LT);
+                    if (feature.properties.LT < farbPalette_temp[i][0]){
+                        color = farbPalette_temp[i][1];
                         break;
                     }
                 }
@@ -250,5 +222,51 @@ async function loadStations() {
     }).addTo(temperaturlayer);
     layerControl.addOverlay(temperaturlayer, "Temperatur")
     temperaturlayer.addTo(karte);
+
+
+    const humidLayer = L.featureGroup();
+    let farbpalette_humi = [
+        [30,"#EEE"],
+        [40,"#DDD"],
+        [50,"#C6C9CE"],
+        [60,"#BBB"],
+        [70,"#AAC"],
+        [80,"#9998DD"],
+        [90,"#8788EE"],
+        [100,"#7677E1"]
+    ];
+
+    L.geoJson(stations, {
+        pointToLayer: function (feature, latlng) {
+            let color;
+            if (feature.properties.RH) {
+                for (let i = 0; i < farbpalette_humi.length; i++) {
+                    console.log(farbpalette_humi[i], feature.properties.RH);
+                    if (feature.properties.RH < farbpalette_humi[i][0]) {
+                        color = farbpalette_humi[i][1];
+                        break;
+                    }
+                }
+
+
+                // if (feature.properties.LT > 0) {
+                //    color = `red`;
+                //}
+                return L.marker(latlng, {
+                    icon: L.divIcon({
+                        html: `<div class="temperatureLabel" style="background-color:${color}"> ${feature.properties.RH} </div>`
+                    })
+
+                });
+
+            }
+        }
+    }).addTo(humidLayer);
+layerControl.addOverlay(humidLayer, "Relative Luftfeuchte");
+
+
+
+
+
 }
 loadStations();
