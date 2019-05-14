@@ -98,10 +98,8 @@ async function loadStations() {
     karte.fitBounds(awsTirol.getBounds());
     layerControl.addOverlay(awsTirol, "Wetterstationen Tirol");
 
-
-
     const windLayer = L.featureGroup();
-      let farbpalette_wind= [
+    let farbpalette_wind = [
         [3, "#00b900"],
         [4, "#10cd24"],
         [5, "#72d475"],
@@ -112,45 +110,39 @@ async function loadStations() {
         [10, "#ff6160"],
         [11, "#ff453c"],
         [12, "#ff200e"]
-]; 
+    ];
 
+    L.geoJson(stations, {
+        pointToLayer: function (feature, latlng) {
+            if (feature.properties.WR) {
 
-
-
-L.geoJson(stations, {
-    pointToLayer: function (feature, latlng) {
-        if (feature.properties.WR) {
-    
-            for (let i = 0; i < farbpalette_wind.length; i++) {
-                const windspeed_bf = Math.round(Math.pow(((feature.properties.WG / 3.6) / 0.836), (2 / 3))); 
-                //Umrechnen von beauford -> km/h
-                if (windspeed_bf < farbpalette_wind[i][0]) {
-                    color = farbpalette_wind[i][1];
-                    break;
+                for (let i = 0; i < farbpalette_wind.length; i++) {
+                    const windspeed_bf = Math.round(Math.pow(((feature.properties.WG / 3.6) / 0.836), (2 / 3)));
+                    //Umrechnen von beauford -> km/h (thx bigL)
+                    if (windspeed_bf < farbpalette_wind[i][0]) {
+                        color = farbpalette_wind[i][1];
+                        break;
+                    }
                 }
+
+                //windspeed_bf (beauford)
+                return L.marker(latlng, {
+                    icon: L.divIcon({
+                        html: `<i style="color: ${color}; transform: rotate(${feature.properties.WR-45}deg)" class="fas fa-arrow-circle-right"></i>`
+                    })
+
+                });
+
             }
-
-            //console.log('Windspeed (Beafort):', windspeed_bf);
-            return L.marker(latlng, {
-                icon: L.divIcon({
-                    html: `<i style="color: ${color}; transform: rotate(${feature.properties.WR-45}deg)" class="fas fa-arrow-circle-right"></i>`
-                })
-
-            });
-
         }
-    }
-}).addTo(windLayer);
-layerControl.addOverlay(windLayer, "Windrichtung");
-
-//windLayer.addTo(karte);
-
-
+    }).addTo(windLayer);
+    layerControl.addOverlay(windLayer, "Windrichtung");
+    //windLayer.addTo(karte);
 
 
     //Temperatur Layer statt Wind
     const temperaturlayer = L.featureGroup();
-        let farbPalette_temp= [
+    let farbPalette_temp = [
         [-30, "#646664"],
         [-28, "#8c8a8c"],
         [-26, "#b4b2b4"],
@@ -190,16 +182,16 @@ layerControl.addOverlay(windLayer, "Windrichtung");
         [42, "#5f0100"],
         [44, "#460101"],
         [46, "#2e0203"]
-];
+    ];
 
 
     L.geoJson(stations, {
         pointToLayer: function (feature, latlng) {
             let color;
             if (feature.properties.LT) {
-                for (let i=0; i<farbPalette_temp.length; i++) {
-                    console.log(farbPalette_temp[i],feature.properties.LT);
-                    if (feature.properties.LT < farbPalette_temp[i][0]){
+                for (let i = 0; i < farbPalette_temp.length; i++) {
+                    console.log(farbPalette_temp[i], feature.properties.LT);
+                    if (feature.properties.LT < farbPalette_temp[i][0]) {
                         color = farbPalette_temp[i][1];
                         break;
                     }
@@ -217,17 +209,17 @@ layerControl.addOverlay(windLayer, "Windrichtung");
     layerControl.addOverlay(temperaturlayer, "Temperatur")
     temperaturlayer.addTo(karte);
 
-
+//Luftfeuchte statt Wind
     const humidityLayer = L.featureGroup();
     let farbpalette_humi = [
-        [30,"#EEE"],
-        [40,"#DDD"],
-        [50,"#C6C9CE"],
-        [60,"#BBB"],
-        [70,"#AAC"],
-        [80,"#9998DD"],
-        [90,"#8788EE"],
-        [100,"#7677E1"]
+        [30, "#EEE"],
+        [40, "#DDD"],
+        [50, "#C6C9CE"],
+        [60, "#BBB"],
+        [70, "#AAC"],
+        [80, "#9998DD"],
+        [90, "#8788EE"],
+        [100, "#7677E1"]
     ];
 
     L.geoJson(stations, {
@@ -243,7 +235,6 @@ layerControl.addOverlay(windLayer, "Windrichtung");
                     }
                 }
 
-        
                 return L.marker(latlng, {
                     icon: L.divIcon({
                         html: `<div class="temperatureLabel" style="background-color:${color}"> ${feature.properties.RH} </div>`
@@ -254,7 +245,7 @@ layerControl.addOverlay(windLayer, "Windrichtung");
             }
         }
     }).addTo(humidityLayer);
-layerControl.addOverlay(humidityLayer, "Relative Luftfeuchte");
+    layerControl.addOverlay(humidityLayer, "Relative Luftfeuchte");
 
 }
 loadStations();
