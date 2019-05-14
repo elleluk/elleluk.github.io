@@ -205,12 +205,6 @@ layerControl.addOverlay(windLayer, "Windrichtung");
                     }
                 }
 
-                //let color = 'blue';
-                //if (feature.properties.LT > 0) {
-                  //  color = 'red';
-               // }
-
-
                 return L.marker(latlng, {
                     icon: L.divIcon({
                         html: `<div class="temperaturLabel" style="background-color:${color}">${feature.properties.LT}</div>`
@@ -224,7 +218,7 @@ layerControl.addOverlay(windLayer, "Windrichtung");
     temperaturlayer.addTo(karte);
 
 
-    const humidLayer = L.featureGroup();
+    const humidityLayer = L.featureGroup();
     let farbpalette_humi = [
         [30,"#EEE"],
         [40,"#DDD"],
@@ -239,6 +233,7 @@ layerControl.addOverlay(windLayer, "Windrichtung");
     L.geoJson(stations, {
         pointToLayer: function (feature, latlng) {
             let color;
+            // Luftfeuchte Bsp. "RH": 72.000,
             if (feature.properties.RH) {
                 for (let i = 0; i < farbpalette_humi.length; i++) {
                     console.log(farbpalette_humi[i], feature.properties.RH);
@@ -248,10 +243,7 @@ layerControl.addOverlay(windLayer, "Windrichtung");
                     }
                 }
 
-
-                // if (feature.properties.LT > 0) {
-                //    color = `red`;
-                //}
+        
                 return L.marker(latlng, {
                     icon: L.divIcon({
                         html: `<div class="temperatureLabel" style="background-color:${color}"> ${feature.properties.RH} </div>`
@@ -261,12 +253,8 @@ layerControl.addOverlay(windLayer, "Windrichtung");
 
             }
         }
-    }).addTo(humidLayer);
-layerControl.addOverlay(humidLayer, "Relative Luftfeuchte");
-
-
-
-
+    }).addTo(humidityLayer);
+layerControl.addOverlay(humidityLayer, "Relative Luftfeuchte");
 
 }
 loadStations();
