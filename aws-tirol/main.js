@@ -187,6 +187,7 @@ async function loadStations() {
 
     L.geoJson(stations, {
         pointToLayer: function (feature, latlng) {
+            // Konzept von Array (zzgl. else if möglich)
             let color;
             if (feature.properties.LT) {
                 for (let i = 0; i < farbPalette_temp.length; i++) {
