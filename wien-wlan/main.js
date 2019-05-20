@@ -69,8 +69,6 @@ karte.addControl(new L.Control.Fullscreen());
 
 karte.setView([48.208333, 16.373056], 12);
 
-const url = 'https://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&version=1.1.0&typeName=ogdwien:WLANWIENATOGD&srsName=EPSG:4326&outputFormat=json'
-
 
 // https://github.com/Norkart/Leaflet-MiniMap
 new L.Control.MiniMap(
@@ -83,3 +81,56 @@ new L.Control.MiniMap(
 ).addTo(karte);
 
 // die Implementierung der Karte startet hier
+
+const url = 'https://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&version=1.1.0&typeName=ogdwien:WLANWIENATOGD&srsName=EPSG:4326&outputFormat=Json'
+
+
+
+function makeMarker(feature, latlng) {
+    const icon = L.icon({
+            iconUrl: 'http://www.data.wien.gv.at/icons/wlanwienatogd.svg',
+            iconSize: [36, 36]
+        });
+    const marker = L.marker(latlng, {
+        icon: icon
+    });
+
+    marker.bindPopup(`
+        <h3>${feature.properties.NAME}</h3>
+        <p>${feature.properties.ADRESSE}</p>
+        <hr>
+        <footer><a href="${feature.properties.WEITERE_INF}">Weblink</a></footer>
+        `);
+    return marker;
+}
+
+
+async function loadWlan(url) {
+    const clusterGruppe = L.markerClusterGroup();
+    const response = await fetch(url);
+    const sightsData = await response.json();
+    const geoJson = L.geoJson(sightsData, {
+        pointToLayer: makeMarker
+
+
+
+    });
+    clusterGruppe.addLayer(geoJson);
+    karte.addLayer(clusterGruppe);
+    layerControl.addOverlay(clusterGruppe, "Wlan Standorte");
+
+    const suchFeld = new L.Control.Search({
+        layer: clusterGruppe,
+        propertyName: "NAME",
+        zoom: 17,
+        initial: false
+    });
+    karte.addControl(suchFeld);
+}
+
+loadWlan(url);
+
+
+
+
+
