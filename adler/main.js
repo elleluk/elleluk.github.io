@@ -1,4 +1,3 @@
-
 //Skript für Adlerweg
 
 const div = document.getElementById("map");
@@ -62,38 +61,38 @@ const kartenLayer = {
     bmapoberflaeche: L.tileLayer("https://{s}.wien.gv.at/basemap/bmapgelaende/grau/google3857/{z}/{y}/{x}.jpeg", {
         subdomains: ["maps", "maps1", "maps2", "maps3", "maps4"],
         attribution: `Datenquelle: <a href="www.basemap.at">basemap.at</a>`
-    }) ,
-    stamen_toner : L.tileLayer ("http://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.png", {
-        subdomains : ["a", "b", "c"],
-        attribution :`Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.`
     }),
-    stamen_watercolor : L.tileLayer ("http://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.png", {
-        subdomains : ["a", "b", "c"],
-        attribution :`Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>.`
+    stamen_toner: L.tileLayer("http://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.png", {
+        subdomains: ["a", "b", "c"],
+        attribution: `Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.`
     }),
-    
-    stamen_terrain : L.tileLayer ("http://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.png", {
-        subdomains : ["a", "b", "c"],
-        attribution :`Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.`
+    stamen_watercolor: L.tileLayer("http://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.png", {
+        subdomains: ["a", "b", "c"],
+        attribution: `Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>.`
+    }),
+
+    stamen_terrain: L.tileLayer("http://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.png", {
+        subdomains: ["a", "b", "c"],
+        attribution: `Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.`
     })
 
 };
 
-kartenLayer.stamen_watercolor.addTo(karte);
+kartenLayer.bmaporthofoto30cm.addTo(karte);
 
 //Auswahlmenü hinzufügen
 L.control.layers({
-"Geoland Basemap" : kartenLayer.geolandbasemap,
-"Geoland Basemap Grau" : kartenLayer.bmapgrau,
-"OpenStreetMap" : kartenLayer.osm,
-"Geoland Basemap Overlay" : kartenLayer.bmapoverlay,
-"Orthophoto" : kartenLayer.bmaporthofoto30cm,
-"Geoland Basemap hiDPI": kartenLayer.bmaphidpi,
-"Geoland Basemap Oberfläche": kartenLayer.bmapoberflaeche,
-"Geoland Basemap Gelände": kartenLayer.bmapgelaende,
-"Stamen Toner": kartenLayer.stamen_toner,
-"Stamen Watercolor": kartenLayer.stamen_watercolor,
-"Stamen Terrain": kartenLayer.stamen_terrain
+    "Geoland Basemap": kartenLayer.geolandbasemap,
+    "Geoland Basemap Grau": kartenLayer.bmapgrau,
+    "OpenStreetMap": kartenLayer.osm,
+    "Geoland Basemap Overlay": kartenLayer.bmapoverlay,
+    "Orthophoto": kartenLayer.bmaporthofoto30cm,
+    "Geoland Basemap hiDPI": kartenLayer.bmaphidpi,
+    "Geoland Basemap Oberfläche": kartenLayer.bmapoberflaeche,
+    "Geoland Basemap Gelände": kartenLayer.bmapgelaende,
+    "Stamen Toner": kartenLayer.stamen_toner,
+    "Stamen Watercolor": kartenLayer.stamen_watercolor,
+    "Stamen Terrain": kartenLayer.stamen_terrain
 }).addTo(karte);
 
 
@@ -131,10 +130,31 @@ karte.fitBounds(blickeGruppe.getBounds());
 
 //Kartenelemente einbauen: 
 
-karte.addControl(new L.Control.Fullscreen());
-let hash = new L.Hash(karte);
-let coords = new L.Control.Coordinates();
-coords.addTo(karte);
-karte.on('click', function(e) {
-	coords.setCoordinates(e);
-});
+// karte.addControl(new L.Control.Fullscreen());
+//let hash = new L.Hash(karte);
+//let coords = new L.Control.Coordinates();
+//coords.addTo(karte);
+//karte.on('click', function (e) {
+//  coords.setCoordinates(e);
+//});
+
+var gpx = 'AdlerwegEtappe01.gpx'; // URL to your GPX file or the GPX itself
+new L.GPX("AdlerwegEtappe01.gpx", {
+    async: true,
+
+}).on('loaded', function (e) {
+    karte.fitBounds(e.target.getBounds());
+
+
+
+}).on('addline', function (e) {
+    console.log('linie geladen');
+    const controlElevation = L.control.elevation({
+        detachedView: true,
+        elevationDiv: "#elevation-div",
+    });
+    controlElevation.addTo(karte);
+    controlElevation.addData(e.line);
+
+
+}).addTo(karte);
