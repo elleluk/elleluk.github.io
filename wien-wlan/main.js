@@ -67,6 +67,65 @@ kartenLayer.bmapgrau.addTo(karte);
 
 karte.addControl(new L.Control.Fullscreen());
 
+const wikipediaGruppe = L.featureGroup().addTo(karte);
+layerControl.addOverlay(wikipediaGruppe, "Wikipedia Artikel");
+
+
+async function wikipediaArtikelLaden(url) {
+    wikipediaGruppe.clearLayers();
+    console.log("Lade", url);
+
+    const antwort = await fetch(url);
+    const jsonDaten = await antwort.json();
+
+    console.log(jsonDaten);
+    for (let artikel of jsonDaten.geonames) {
+        const wikipediaMarker = L.marker([artikel.lat, artikel.lng], {
+            icon: L.icon({
+                iconUrl: "icons/wikiIcon.png",
+                iconSize: [26, 22]
+            })
+
+        }).addTo(wikipediaGruppe);
+
+
+        wikipediaMarker.bindPopup(
+         `<h3>${artikel.title}</h3>
+        <p>${artikel.summary}</p>
+        <hr>
+        <footer><a target="_blank" href="https://${artikel.wikipediaUrl}">Weblink</
+        a></footer>`
+        );
+    }
+}
+
+let letzteGeonamesUrl = null;
+//beim Zoomen mehre (5) Wikipediaartikel laden
+karte.on("load zoomend moveend", function () {
+    console.log("Karte geladen", karte.getBounds());
+
+    let ausschnitt = {
+        n: karte.getBounds().getNorth(),
+        s: karte.getBounds().getSouth(),
+        o: karte.getBounds().getEast(),
+        w: karte.getBounds().getWest(),
+    }
+    console.log(ausschnitt);
+    const geonamesUrl = `http://api.geonames.org/wikipediaBoundingBoxJSON?formatted=true&north=${ausschnitt.n}&south=${ausschnitt.s}&east=${ausschnitt.o}&west=${ausschnitt.w}&username=webmapping&style=full&maxRows=50&lang=de`;
+    console.log(geonamesUrl);
+
+    //sicherstellen, dass nur dann neuer Name abholt, wenn nicht bereits angezeigt wurde
+    if (geonamesUrl != letzteGeonamesUrl) {
+    //Json Artikel laden
+    wikipediaArtikelLaden(geonamesUrl);
+    letzteGeonamesUrl = geonamesUrl;
+
+    }
+
+});
+
+
+
 karte.setView([48.208333, 16.373056], 12);
 
 
@@ -88,9 +147,9 @@ const url = 'https://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&ve
 
 function makeMarker(feature, latlng) {
     const icon = L.icon({
-            iconUrl: 'http://www.data.wien.gv.at/icons/wlanwienatogd.svg',
-            iconSize: [36, 36]
-        });
+        iconUrl: 'http://www.data.wien.gv.at/icons/wlanwienatogd.svg',
+        iconSize: [36, 36]
+    });
     const marker = L.marker(latlng, {
         icon: icon
     });
@@ -133,4 +192,9 @@ loadWlan(url);
 
 
 
+
+
+//Wikipedia Artikel laden
+
+// http://api.geonames.org/wikipediaBoundingBoxJSON?formatted=true&north=44.1&south=-9.9&east=-22.4&west=55.2&username=webmapping&style=full
 
