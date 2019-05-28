@@ -144,8 +144,12 @@ new L.GPX("AdlerwegEtappe01.gpx", {
 
 }).on('loaded', function (e) {
     karte.fitBounds(e.target.getBounds());
-
-
+    const minSpan = document.getElementById('min');
+    const maxSpan = document.getElementById('max');
+    const diffSpan = document.getElementById('diff');
+    minSpan.innerHTML = e.target.get_elevation_min();
+    maxSpan.innerHTML = e.target.get_elevation_max();
+    diffSpan.innerHTML = Math.round(e.target.get_elevation_gain());
 
 }).on('addline', function (e) {
     console.log('linie geladen');
@@ -187,6 +191,5 @@ new L.GPX("AdlerwegEtappe01.gpx", {
         ).addTo(karte);
     }
 
-
-
 });
+
