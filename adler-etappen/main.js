@@ -102,7 +102,7 @@ function etappeErzeugen(nummer) {
     document.getElementById("daten_titel").innerHTML = daten.titel;
     document.getElementById("daten_info").innerHTML = daten.info;
     document.getElementById("daten_strecke").innerHTML = daten.strecke;
-    
+
     console.log(daten);
 
     //GPX Track laden
@@ -123,7 +123,7 @@ function etappeErzeugen(nummer) {
     }).addTo(gpxGruppe);
 
     gpxTrack.on("loaded", function () {
-        karte.fitBounds(gpxTrack.getBounds());
+        // karte.fitBounds(gpxTrack.getBounds());
     });
 
     gpxTrack.on("addline", function (evt) {
@@ -156,3 +156,25 @@ pulldown.onchange = function (evt) {
     console.log(opts[opts.selectedIndex].text);
     etappeErzeugen(opts[opts.selectedIndex].value);
 }
+
+
+
+L.Routing.control({}).addTo(karte);
+
+const routingMachine = L.Routing.control({}).addTo(karte)
+
+let start, end;
+karte.on("click", function (ev) {
+
+    console.log("Clicked: ", ev.latlng);
+    if (!start) {
+        start = ev.latlng;
+        alert("Start gesetzt, bitte weiterer Punkt setzten für Streckenberechnung")
+    } else {
+        end = ev.latlng;
+        routingMachine.setWaypoints([start, end]);
+        routingMachine.route();
+        start = null;
+    }
+    console.log("Start: ", start, "End ", end);
+})
