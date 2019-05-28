@@ -169,7 +169,7 @@ karte.on("click", function (ev) {
     console.log("Clicked: ", ev.latlng);
     if (!start) {
         start = ev.latlng;
-        alert("Start gesetzt, bitte weiterer Punkt setzten für Streckenberechnung")
+        //alert("Start gesetzt, bitte weiterer Punkt setzten für Streckenberechnung")
     } else {
         end = ev.latlng;
         routingMachine.setWaypoints([start, end]);
