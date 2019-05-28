@@ -158,7 +158,7 @@ function makeMarker(feature, latlng) {
         <h3>${feature.properties.NAME}</h3>
         <p>${feature.properties.ADRESSE}</p>
         <hr>
-        <footer><a href="${feature.properties.WEITERE_INF}">Weblink</a></footer>
+        <!-- <footer><a href="${feature.properties.WEITERE_INF}">Weblink</a></footer> -->
         `);
     return marker;
 }
